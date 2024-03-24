@@ -27,7 +27,7 @@ class Vapi:
         self.api_key = api_key
         self.api_url = api_url
 
-    def start(self, *, assistant_id=None, assistant=None):
+    def start(self, *, assistant_id=None, assistant=None, audio_callback=None):
         # Start a new call
         if assistant_id:
             assistant = {'assistantId': assistant_id}
@@ -41,8 +41,10 @@ class Vapi:
             raise Exception("Error: Unable to create call.")
 
         print('Joining call... ' + call_id)
-
+       
         self.__client = DailyCall()
+        if audio_callback:
+            self.__client.set_audio_callback(audio_callback)
         self.__client.join(web_call_url)
 
     def stop(self):

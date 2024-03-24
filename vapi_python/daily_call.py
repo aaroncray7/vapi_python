@@ -90,6 +90,9 @@ class DailyCall(daily.EventHandler):
 
         self.__receive_bot_audio_thread.start()
         self.__send_user_audio_thread.start()
+    
+    def set_audio_callback(self, callback):
+        self.audio_callback = callback
 
     def on_inputs_updated(self, inputs):
         self.__app_inputs_updated = True
@@ -160,3 +163,5 @@ class DailyCall(daily.EventHandler):
 
             if len(buffer) > 0:
                 self.__output_audio_stream.write(buffer, CHUNK_SIZE)
+                if self.audio_callback:
+                    self.audio_callback(buffer, CHUNK_SIZE)
